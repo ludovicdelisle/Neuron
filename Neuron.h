@@ -11,21 +11,23 @@ using namespace std;
 class Neuron {
 
 public:
-    void update(int input, double h, double simtime);
+    bool update(int input, double h);
     double get_potential()const;
-    int get_spikes()const;
-    //vector get_time_of_spikes()const;
-    void add_spike();
     void add_time_of_spike(double t);
     bool get_refractory()const;
     double new_potential_calcul(int input, double h);
+    vector <Neuron*> get_leaving_links();
+    void charge_J(double input);
+    void set_buffer(int b);
 private:
     bool refractory=false;
-    double potential_V=-70;
-    int spikes = 0;
-    vector <int> time_of_spikes;
+    double potential_V=0;
     double tao = 0.02;
-    int R=1000000;
+    double R=25.2;
+    vector <Neuron*> leaving_links;
+    vector <Neuron*> entering_links;
+    double J=0;
+    int buffer=0;
 };
 
 

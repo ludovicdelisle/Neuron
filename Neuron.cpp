@@ -6,38 +6,43 @@
 
 
 
-void Neuron::update(int input, double h, double simtime){
+bool Neuron::update(int input, double h) {
     if (refractory){
-        potential_V=-70;
         refractory=false;
-        add_spike();
-        add_time_of_spike(simtime);
-    }else if(potential_V>-55){
+        potential_V=new_potential_calcul(input, h);
+        return false;
+    }else if(potential_V>=20){
+        potential_V=0;
         refractory=true;
+        return true;
     }else{
         potential_V=new_potential_calcul(input, h);
+        return false;
     }
 }
 double Neuron::get_potential()const{
     return potential_V;
-}
-int Neuron::get_spikes()const{
-    return spikes;
-}
-/*vector Neuron::get_time_of_spikes()const{
-    return time_of_spikes;
-}*/
-void Neuron::add_spike(){
-    spikes+=1;
-}
-void Neuron::add_time_of_spike(double t){
-    time_of_spikes.push_back(t);
 }
 bool Neuron::get_refractory()const{
     return refractory;
 }
 double Neuron::new_potential_calcul(int input, double h) {
     double V;
-    V = exp(-h/tao) * potential_V + input * R / tao * (1 - exp(-h/tao));
+    if(buffer<=0) {
+        V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao)) + J;
+        J = 0;
+    }else {
+        V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao));
+        buffer--;
+    }
     return V;
+}
+vector <Neuron*> Neuron::get_leaving_links(){
+    return leaving_links;
+}
+void Neuron::charge_J(double input){
+    J+=input;
+}
+void Neuron::set_buffer(int b){
+    buffer=b;
 }
