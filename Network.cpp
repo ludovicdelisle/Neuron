@@ -28,7 +28,6 @@ void Network::update(int input, double h, double simtime){
         if(list_neurons[i]->update(input-i, h)){
             if(list_neurons[i]!=list_neurons.back()) {
                 list_neurons[i + 1]->charge_J(18.0);
-                list_neurons[i + 1]->set_buffer(5);
             }
             add_time_of_spike(simtime);
             ++number_of_spike_per_cycle.back();

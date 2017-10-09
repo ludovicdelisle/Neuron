@@ -10,13 +10,16 @@ bool Neuron::update(int input, double h) {
     if (refractory){
         refractory=false;
         potential_V=new_potential_calcul(input, h);
+        set_buffer();
         return false;
     }else if(potential_V>=20){
         potential_V=0;
         refractory=true;
+        set_buffer();
         return true;
     }else{
         potential_V=new_potential_calcul(input, h);
+        set_buffer();
         return false;
     }
 }
@@ -28,21 +31,19 @@ bool Neuron::get_refractory()const{
 }
 double Neuron::new_potential_calcul(int input, double h) {
     double V;
-    if(buffer<=0) {
-        V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao)) + J;
-        J = 0;
-    }else {
-        V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao));
-        buffer--;
-    }
+        V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao)) + buffer.back();
+
     return V;
 }
 vector <Neuron*> Neuron::get_leaving_links(){
     return leaving_links;
 }
 void Neuron::charge_J(double input){
-    J+=input;
+    buffer[0] += input;
 }
-void Neuron::set_buffer(int b){
-    buffer=b;
+void Neuron::set_buffer(){
+    for(size_t i = buffer.size()-1; i>0; --i){
+       buffer[i]= buffer[i-1];
+    }
+    buffer[0]=0;
 }

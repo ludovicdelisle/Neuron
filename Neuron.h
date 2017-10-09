@@ -3,6 +3,7 @@
 //
 #include <vector>
 #include <cmath>
+#include <array>
 #ifndef NEURONS_NEURON_H
 #define NEURONS_NEURON_H
 
@@ -18,7 +19,7 @@ public:
     double new_potential_calcul(int input, double h);
     vector <Neuron*> get_leaving_links();
     void charge_J(double input);
-    void set_buffer(int b);
+    void set_buffer();
 private:
     bool refractory=false;
     double potential_V=0;
@@ -26,8 +27,7 @@ private:
     double R=25.2;
     vector <Neuron*> leaving_links;
     vector <Neuron*> entering_links;
-    double J=0;
-    int buffer=0;
+    array<int, 5> buffer={0,0,0,0,0};
 };
 
 
