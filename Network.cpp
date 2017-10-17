@@ -23,16 +23,25 @@ void Network::kill_a_neuron(Neuron* n) {
 void Network::add_time_of_spike(double t){
     time_of_spikes.push_back(t);
 }
-void Network::update(int input, double h, double simtime){
-    for(size_t i=0; i<list_neurons.size(); ++i){
-        if(list_neurons[i]->update(input-i, h)){
-            if(list_neurons[i]!=list_neurons.back()) {
-                list_neurons[i + 1]->charge_J(18.0);
+void Network::update(double input, double h, double simtime){
+    for(size_t i=0; i<list_neurons.size(); ++i) {
+        if (i == 0) {
+        if (list_neurons[i]->update(input, h)) {
+            if (list_neurons[i] != list_neurons.back()) {
+                list_neurons[i + 1]->charge_J(0.1);
             }
             add_time_of_spike(simtime);
             ++number_of_spike_per_cycle.back();
         }
-
+    }else if (i != 0) {
+            if (list_neurons[i]->update(0, h)) {
+                if (list_neurons[i] != list_neurons.back()) {
+                    list_neurons[i + 1]->charge_J(18.0);
+                }
+                add_time_of_spike(simtime);
+                ++number_of_spike_per_cycle.back();
+            }
+        }
     }
     cout<< list_neurons[0]->get_potential()<<"    ";
     cout<< list_neurons[1]->get_potential()<< endl;

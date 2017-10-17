@@ -6,7 +6,7 @@
 
 
 
-bool Neuron::update(int input, double h) {
+bool Neuron::update(double input, double h) {
     if (refractory){
         refractory=false;
         potential_V=new_potential_calcul(input, h);
@@ -29,7 +29,7 @@ double Neuron::get_potential()const{
 bool Neuron::get_refractory()const{
     return refractory;
 }
-double Neuron::new_potential_calcul(int input, double h) {
+double Neuron::new_potential_calcul(double input, double h) {
     double V;
         V = pow(M_E, -h / tao) * potential_V + input * R * (1 - pow(M_E, -h / tao)) + buffer.back();
 

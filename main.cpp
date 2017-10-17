@@ -10,11 +10,12 @@ int main() {
     network.add_a_neuron(&n1);
     network.add_a_neuron(&n2);
 
-    int t_stop=1;
-    double h=(0.001);
+    int t_stop=200;
+    double h=(0.1);
     double sim_time=0;
     do{
-        double current_input=1;
+        double current_input=1.01;
+        cout<<sim_time<<"  ";
         network.update(current_input, h, sim_time);
         sim_time+=h;
     }while(sim_time<t_stop);

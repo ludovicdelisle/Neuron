@@ -14,7 +14,7 @@ public:
     void kill_a_neuron(Neuron* n);
     void add_time_of_spike(double t);
     vector<double> get_time_of_spike()const;
-    void update(int input, double h, double simtime);
+    void update(double input, double h, double simtime);
     void afficher_spikes_per_cycle();
 private:
 

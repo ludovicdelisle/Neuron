@@ -7,27 +7,28 @@
 #ifndef NEURONS_NEURON_H
 #define NEURONS_NEURON_H
 
+
 using namespace std;
 
 class Neuron {
 
 public:
-    bool update(int input, double h);
+    bool update(double input, double h);
     double get_potential()const;
     void add_time_of_spike(double t);
     bool get_refractory()const;
-    double new_potential_calcul(int input, double h);
+    double new_potential_calcul(double input, double h);
     vector <Neuron*> get_leaving_links();
     void charge_J(double input);
     void set_buffer();
 private:
     bool refractory=false;
     double potential_V=0;
-    double tao = 0.02;
-    double R=25.2;
+    double tao = 20;
+    double R=20;
     vector <Neuron*> leaving_links;
     vector <Neuron*> entering_links;
-    array<int, 5> buffer={0,0,0,0,0};
+    array<double, 15> buffer={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 };
 
 
